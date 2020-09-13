@@ -14,7 +14,7 @@ ActiveRecord::Schema.define(version: 2020_09_13_133834) do
 
   create_table "ingredients", force: :cascade do |t|
     t.string "ingredient_name"
-    t.integer "measurement"
+    t.string "measurement"
     t.integer "cooking_time"
     t.text "directions"
     t.integer "recipe_id", null: false

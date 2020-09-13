@@ -1,0 +1,35 @@
+*, *::before, *::after {
+    box-sizing: border-box;
+    justify-content: center;
+    align-items: center;
+}
+
+body {
+    background-color: #ffdbc5;
+    color: #1d2d50;
+    padding: 0;
+    margin: 0;
+    height: 100vh;
+    width: auto;
+    font-size: 20px;
+    font-family: 'Montserrat', sans-serif;
+}
+
+.welcome-text {
+    font-size: 70px;
+    text-align: center;
+    font-family: 'Sacramento', cursive;
+}
+
+.container {
+    width: 900px;
+    max-width: 80%;
+    background-color: #f4f4f4;
+    padding: 20px;
+    margin: 40px auto;
+    border: 7px solid #cf1b1b;
+    border-radius: 30px;
+    box-shadow: 0 0 10px 6px #900d0d;
+    display: block;
+
+}

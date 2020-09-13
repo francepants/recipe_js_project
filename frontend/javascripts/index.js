@@ -6,6 +6,7 @@ document.addEventListener('DOMContentLoaded', handleEvents())
 
 function handleEvents() {
     loadRecipes()
+    loadIngredients()
 }
 
 // recipes
@@ -45,8 +46,24 @@ function loadIngredients() {
         return resp.json();
     })
     .then(function(ingredients){
-        ingredients.forEach(function(ing){
-            displayIngredient(ing)
+        ingredients.forEach(function(ingredient){
+            displayIngredients(ingredient)
         })
     })
+}
+
+function displayIngredients(ingredients){
+
+    const ul = document.createElement('ul')
+    const li = document.createElement('li')
+    const button = document.createElement('button')
+
+    
+    ul.innerText = "Ingredients:"
+    li.innerText = ingredients.ingredient_name
+    button.innerText = "See ingredients"
+
+    ul.appendChild(li)
+    main.appendChild(ul)
+  
 }

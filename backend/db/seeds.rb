@@ -14,9 +14,9 @@ recipes = Recipe.create([
 # sofrito
 ingredients = Ingredient.create([
     {ingredient_name: "2 medium Spanish onions, cut into large chunks", measurement: "about 2 cups", recipe_id: 1},
-    {ingredient_name: "4 cubanelle peppers, stemmed, seeded, and cut into large chunks", measurement: "2 cups", recipe_id: },
-    {ingredient_name: "Medium cloves garlic, peeled", measurement: "18 halves", recipe_id: },
-    {ingredient_name: "1 large bunch cilantro, washed and roughly chopped", measurement: "about 1 1/2 cups", recipe_id: },
+    {ingredient_name: "4 cubanelle peppers, stemmed, seeded, and cut into large chunks", measurement: "2 cups", recipe_id: 1},
+    {ingredient_name: "Medium cloves garlic, peeled", measurement: "18 halves", recipe_id: 1},
+    {ingredient_name: "1 large bunch cilantro, washed and roughly chopped", measurement: "about 1 1/2 cups", recipe_id: 1},
     {ingredient_name: "Culantro" , measurement: "4 leaves", recipe_id: 1},
     {ingredient_name: "4 ripe plum tomatoes, cored and cut into chunks " , measurement: "about 1 1/2 cups", recipe_id: 1},
     {ingredient_name: "1 large red bell pepper, cored, seeded, and roughly chopped", measurement: "about 1 1/2 cups", recipe_id: 1},
@@ -35,5 +35,5 @@ ingredients = Ingredient.create([
     {ingredient_name: "Sazon culantro y achiote", measurement: "1 packet", recipe_id: 2},
     {ingredient_name: "Whole spanish olives", measurement: "10 count", recipe_id: 2},
     {ingredient_name: "Cumin", measurement: "1 tsp", recipe_id: 2},
-    {ingredient_name: "Salt", measurement: "To taste", recipe_id: 2},
+    {ingredient_name: "Salt", measurement: "To taste", recipe_id: 2}
 ])

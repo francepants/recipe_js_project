@@ -32,3 +32,8 @@ body {
     box-shadow: 0 0 10px 6px #900d0d;
     display: block;
 }
+
+#recipe-form {
+
+    text-align: center;
+}

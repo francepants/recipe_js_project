@@ -1,12 +1,13 @@
 const BASE_URL = "http://localhost:3000"
 const RECIPES_URL = "http://localhost:3000/recipes"
 const INGREDIENTS_URL = "http://localhost:3000/ingredients"
+const main = document.querySelector('div#main')
 
 document.addEventListener('DOMContentLoaded', handleEvents())
 
 function handleEvents() {
     loadRecipes()
-    
+    createRecipeForm()
 }
 
 // recipes
@@ -23,7 +24,6 @@ function loadRecipes() {
 }
 
 function displayRecipe(recipe){
-    const main = document.querySelector('div#main')
     const div = document.createElement('div')
     const h3 = document.createElement('h3')
     const p = document.createElement('p')
@@ -35,13 +35,15 @@ function displayRecipe(recipe){
     button.innerText = "See ingredients"
 
     //click event loads ingredients over and over every time the button is pressed
-    // show/hide 
+    //show/hide
     // need it to load certain recipes ingredients using recipe_id
     button.addEventListener('click', loadIngredients) 
     
-    main.appendChild(h3)
-    main.appendChild(p)
-    main.appendChild(button)
+    
+    div.appendChild(h3)
+    div.appendChild(p)
+    div.appendChild(button)
+    main.appendChild(div)
 }
 
 // ingredients
@@ -73,3 +75,31 @@ function displayIngredients(ingredients){
     main.appendChild(ul)
   
 }
+
+
+// create recipe form
+function createRecipeForm() {
+    const recipeForm = document.createElement('form')
+    recipeForm.setAttribute('method',"post")
+    recipeForm.setAttribute('action',"submit")
+
+    const recipeDiv = document.createElement('div')
+
+    const recipeInput = document.createElement("input") // input element/text
+    recipeInput.setAttribute('type',"text")
+    recipeInput.setAttribute('name',"recipe-name")
+
+    const recipeSubmitButton = document.createElement("input")
+    recipeSubmitButton.setAttribute('type',"submit")
+    recipeSubmitButton.setAttribute('value',"Create Recipe")
+
+    recipeForm.appendChild(recipeDiv)
+    recipeForm.appendChild(recipeInput)
+    recipeForm.appendChild(recipeSubmitButton)
+
+    document.getElementById('main').appendChild(recipeForm);
+}
+// add recipe button
+
+
+//random

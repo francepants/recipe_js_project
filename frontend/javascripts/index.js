@@ -6,7 +6,7 @@ document.addEventListener('DOMContentLoaded', handleEvents())
 
 function handleEvents() {
     loadRecipes()
-    loadIngredients()
+    
 }
 
 // recipes
@@ -34,6 +34,11 @@ function displayRecipe(recipe){
     p.innerText = recipe.description
     button.innerText = "See ingredients"
 
+    //click event loads ingredients over and over every time the button is pressed
+    // show/hide 
+    // need it to load certain recipes ingredients using recipe_id
+    button.addEventListener('click', loadIngredients) 
+    
     main.appendChild(h3)
     main.appendChild(p)
     main.appendChild(button)
@@ -57,13 +62,14 @@ function displayIngredients(ingredients){
     const ul = document.createElement('ul')
     const li = document.createElement('li')
     const button = document.createElement('button')
+    
 
     
     ul.innerText = "Ingredients:"
     li.innerText = ingredients.ingredient_name
     button.innerText = "See ingredients"
 
-    ul.appendChild(li)
+    ul.appendChild(li) 
     main.appendChild(ul)
   
 }

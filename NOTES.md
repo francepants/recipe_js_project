@@ -5,7 +5,7 @@
         - description
     - ingredients
         - ingredient name
-        - measurement:integer
+        - measurement:string
         - cooking time:integer
         - directions:text
 
@@ -20,7 +20,15 @@
 
 ## Buttons
 - add recipe
-- edit recipe
+- edit recipe        
 - delete recipe
 - same for ingredients 
 
+## brainstorm
+- what should happen
+    - want to load ingredients per recipe_id
+- what is the cause
+    click event 
+
+/////
+loads ingredients over and over, but i need it to load certain recipes ingredients using recipe_id

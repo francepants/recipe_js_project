@@ -20,7 +20,7 @@ ingredients = Ingredient.create([
     {ingredient_name: "Culantro" , measurement: "4 leaves", recipe_id: 1},
     {ingredient_name: "4 ripe plum tomatoes, cored and cut into chunks " , measurement: "about 1 1/2 cups", recipe_id: 1},
     {ingredient_name: "1 large red bell pepper, cored, seeded, and roughly chopped", measurement: "about 1 1/2 cups", recipe_id: 1},
-    {ingredient_name: "Kosher salt (", measurement: "to taste", recipe_id: 1}
+    {ingredient_name: "Kosher salt", measurement: "to taste", recipe_id: 1}
 ])
 
 # arroz con gandules

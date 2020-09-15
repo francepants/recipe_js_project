@@ -6,7 +6,8 @@ const main = document.querySelector('div#main')
 const form = () => document.getElementById('recipe-form')
 const recipeName = () => document.getElementById('recipe-name')
 const recipeDescription = () => document.getElementById('recipe-description')
-let recipes = []
+// let recipes = []
+
 
 document.addEventListener('DOMContentLoaded', handleEvents())
 
@@ -19,14 +20,17 @@ function handleEvents() {
 // recipes
 function loadRecipes() {
     fetch(RECIPES_URL)
-    .then(function(resp){
-        return resp.json();
-    })
-    .then(function(recipes){
-        recipes.forEach(function(recipe){
-            displayRecipe(recipe)
-        })
-    })
+    .then(resp => resp.json())
+    .then(recipes => displayRecipes(recipes))
+    // .then(function(recipes){
+    //     recipes.forEach(function(recipe){
+    //         displayRecipe(recipe)  //displayRecipe(recipe) - singular, shows seed data
+    //     })
+    // })
+}
+
+function displayRecipes(recipes) {
+    recipes.forEach(recipe => displayRecipe(recipe))
 }
 
 function displayRecipe(recipe){
@@ -54,12 +58,10 @@ function displayRecipe(recipe){
     main.appendChild(div)
 }
 
-// ingredients
+// ingredients //needs work
 function loadIngredients() {
     fetch(INGREDIENTS_URL)
-    .then(function(resp){
-        return resp.json();
-    })
+    .then(resp => resp.json())
     .then(function(ingredients){
         ingredients.forEach(function(ingredient){
             displayIngredients(ingredient)
@@ -122,8 +124,6 @@ function createRecipe(e) {
         name: recipeName().value,
         description: recipeDescription().value
     }
-
-    recipes.push(recipe) //save
-
+    // recipes.push(recipe) //save
     displayRecipe(recipe)
 }

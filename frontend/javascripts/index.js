@@ -21,7 +21,12 @@ function handleEvents() {
 function loadRecipes() {
     fetch(RECIPES_URL)
     .then(resp => resp.json())
-    .then(recipes => displayRecipes(recipes))
+    .then(obj => obj.forEach(recipe => {
+        let recipesss = Recipes.create(recipe.id, recipe.name, recipe.description)
+        displayRecipe(recipesss)
+    }))
+    // .then(recipes => displayRecipes(recipes))
+    ///////
     // .then(function(recipes){
     //     recipes.forEach(function(recipe){
     //         displayRecipe(recipe)  //displayRecipe(recipe) - singular, shows seed data
@@ -34,10 +39,10 @@ function displayRecipes(recipes) {
 }
 
 function displayRecipe(recipe){
-    const div = document.createElement('div')
-    const h3 = document.createElement('h3')
-    const p = document.createElement('p')
-    const button = document.createElement('button')
+    let div = document.createElement('div')
+    let h3 = document.createElement('h3')
+    let p = document.createElement('p')
+    let button = document.createElement('button')
 
     // const recipeListDiv = document.createElement('div')
 
@@ -59,7 +64,8 @@ function displayRecipe(recipe){
 }
 
 // ingredients //needs work
-function loadIngredients() {
+function loadIngredients(ingredients) {
+    
     fetch(INGREDIENTS_URL)
     .then(resp => resp.json())
     .then(function(ingredients){
@@ -71,9 +77,9 @@ function loadIngredients() {
 
 function displayIngredients(ingredients){
 
-    const ul = document.createElement('ul')
-    const li = document.createElement('li')
-    const button = document.createElement('button')
+    let ul = document.createElement('ul')
+    let li = document.createElement('li')
+    let button = document.createElement('button')
     
     ul.innerText = "Ingredients:"
     li.innerText = ingredients.ingredient_name
@@ -86,26 +92,26 @@ function displayIngredients(ingredients){
 
 // create recipe form
 function createRecipeForm() {
-    const recipeForm = document.createElement('form')
+    let recipeForm = document.createElement('form')
     // recipeForm.setAttribute('method',"post")
     // recipeForm.setAttribute('action',"submit")
     recipeForm.id = "recipe-form"
 
-    const recipeDiv = document.createElement('div')
+    let recipeDiv = document.createElement('div')
 
-    const recipeNameInput = document.createElement("input") // input element/text
+    let recipeNameInput = document.createElement("input") // input element/text
     recipeNameInput.setAttribute('type',"text")
     recipeNameInput.setAttribute('name',"recipe-name")
     recipeNameInput.id = "recipe-name"
     recipeNameInput.placeholder = "Recipe Name"
     
-    const recipeDescriptionInput = document.createElement("input") // input element/text
+    let recipeDescriptionInput = document.createElement("input") // input element/text
     recipeDescriptionInput.setAttribute('type',"text")
     recipeDescriptionInput.setAttribute('name',"recipe-name")
     recipeDescriptionInput.id = "recipe-description"
     recipeDescriptionInput.placeholder = "Recipe Description"
 
-    const recipeSubmitButton = document.createElement("input") // submit button
+    let recipeSubmitButton = document.createElement("input") // submit button
     recipeSubmitButton.setAttribute('type',"submit")
     recipeSubmitButton.setAttribute('value',"Create Recipe")
 
@@ -120,7 +126,7 @@ function createRecipeForm() {
 function createRecipe(e) {
     e.preventDefault();
 
-    const recipe = {
+    let recipe = {
         name: recipeName().value,
         description: recipeDescription().value
     }

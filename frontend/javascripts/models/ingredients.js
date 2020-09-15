@@ -1,8 +1,14 @@
 class Ingredients {
-    constructor(ingredient_name, measurement, cooking_time, directions) {
+    constructor(id, ingredient_name, measurement, recipe_id) {
+        this.id = id;
         this.ingredient_name = ingredient_name;
         this.measurement = measurement;
-        this.cooking_time = cooking_time;
-        this.directions = directions;
+        this.recipe_id = recipe_id;
+    }
+
+    static create(id, ingredient_name, measurement, recipe_id){
+        let ingredient = new Ingredients(id, ingredient_name, measurement, recipe_id)
+            Ingredients.all.push(ingredient)
+            return ingredient
     }
 }

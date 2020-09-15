@@ -2,13 +2,18 @@ const BASE_URL = "http://localhost:3000"
 const RECIPES_URL = "http://localhost:3000/recipes"
 const INGREDIENTS_URL = "http://localhost:3000/ingredients"
 const main = document.querySelector('div#main')
-const br = document.createElement('br')
+
+const form = () => document.getElementById('recipe-form')
+const recipeName = () => document.getElementById('recipe-name')
+const recipeDescription = () => document.getElementById('recipe-description')
+let recipes = []
 
 document.addEventListener('DOMContentLoaded', handleEvents())
 
 function handleEvents() {
     loadRecipes()
     createRecipeForm()
+    form().addEventListener('submit', createRecipe)
 }
 
 // recipes
@@ -30,7 +35,8 @@ function displayRecipe(recipe){
     const p = document.createElement('p')
     const button = document.createElement('button')
 
-    
+    // const recipeListDiv = document.createElement('div')
+
     h3.innerText = recipe.name
     p.innerText = recipe.description
     button.innerText = "See ingredients"
@@ -44,6 +50,7 @@ function displayRecipe(recipe){
     div.appendChild(h3)
     div.appendChild(p)
     div.appendChild(button)
+    // recipeListDiv.appendChild(div)
     main.appendChild(div)
 }
 
@@ -66,15 +73,12 @@ function displayIngredients(ingredients){
     const li = document.createElement('li')
     const button = document.createElement('button')
     
-
-    
     ul.innerText = "Ingredients:"
     li.innerText = ingredients.ingredient_name
     button.innerText = "See ingredients"
 
     ul.appendChild(li) 
     main.appendChild(ul)
-  
 }
 
 
@@ -84,7 +88,6 @@ function createRecipeForm() {
     // recipeForm.setAttribute('method',"post")
     // recipeForm.setAttribute('action',"submit")
     recipeForm.id = "recipe-form"
-
 
     const recipeDiv = document.createElement('div')
 
@@ -110,4 +113,17 @@ function createRecipeForm() {
     recipeForm.appendChild(recipeSubmitButton)
 
     document.getElementById('main').appendChild(recipeForm);
+}
+
+function createRecipe(e) {
+    e.preventDefault();
+
+    const recipe = {
+        name: recipeName().value,
+        description: recipeDescription().value
+    }
+
+    recipes.push(recipe) //save
+
+    displayRecipe(recipe)
 }

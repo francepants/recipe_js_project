@@ -1,10 +1,14 @@
 class Recipes {
-    constructor(id, name, description, cooking_time, directions){
+    static all = []
+
+    constructor(id, name, description, cooking_time, directions, ingredients){
         this.id = id;
         this.name = name;
         this.description = description;
         this.cooking_time = cooking_time;
         this.directions = directions;
+        this.ingredients = ingredients.map(ingredients => Ingredients.create(ingredients.id, ingredients.ingredient_name, ingredients.measurement, ingredients.recipe_id))
+        Recipes.all.push(this)
     }
 
 

@@ -21,44 +21,50 @@ function handleEvents() {
 function loadRecipes() {
     fetch(RECIPES_URL)
     .then(resp => resp.json())
-    .then(obj => obj.forEach(recipe => {
-        let recipesss = Recipes.create(recipe.id, recipe.name, recipe.description)
-        displayRecipe(recipesss)
-    }))
-    // .then(recipes => displayRecipes(recipes))
+    .then(recipes => displayRecipes(recipes))
+}
+    // .then(rec => rec.forEach(recipe => {
+    //     let recipes = Recipes.create(recipe.id, recipe.name, recipe.description, recipe.cooking_time, recipe.directions)
+    //     displayRecipes(recipes)
+    //     }))
     ///////
     // .then(function(recipes){
     //     recipes.forEach(function(recipe){
     //         displayRecipe(recipe)  //displayRecipe(recipe) - singular, shows seed data
     //     })
     // })
-}
 
 function displayRecipes(recipes) {
     recipes.forEach(recipe => displayRecipe(recipe))
 }
 
 function displayRecipe(recipe){
+    // let recipeListDiv = document.createElement('div')
     let div = document.createElement('div')
+    div.id = recipe.id
+    // debugger
     let h3 = document.createElement('h3')
-    let p = document.createElement('p')
-    let button = document.createElement('button')
-
-    // const recipeListDiv = document.createElement('div')
-
     h3.innerText = recipe.name
-    p.innerText = recipe.description
-    button.innerText = "See ingredients"
 
-    //click event loads ingredients over and over every time the button is pressed
-    //show/hide
-    // need it to load certain recipes ingredients using recipe_id
-    button.addEventListener('click', loadIngredients) 
+    let p = document.createElement('p')
+    p.innerText = recipe.description
+
+    //click event loads ingredients over and over every time the button is pressed // need it to load certain recipes ingredients using recipe_id
+    let seeIngredientsButton = document.createElement('button')
+    seeIngredientsButton.innerText = "See ingredients"
+    seeIngredientsButton.addEventListener('click', loadIngredients) 
     
-    
+    let deleteRecipeButton = document.createElement('button')
+    deleteRecipeButton.setAttribute("data-id", recipe.id)
+    deleteRecipeButton.innerText = "Delete"
+    deleteRecipeButton.className = "delete"
+    deleteRecipeButton.addEventListener('click', () =>{
+        deleteRecipe(deleteRecipeButton.getAttribute("data-id"))
+    })
     div.appendChild(h3)
     div.appendChild(p)
-    div.appendChild(button)
+    div.appendChild(seeIngredientsButton)
+    div.appendChild(deleteRecipeButton)
     // recipeListDiv.appendChild(div)
     main.appendChild(div)
 }
@@ -76,7 +82,6 @@ function loadIngredients(ingredients) {
 }
 
 function displayIngredients(ingredients){
-
     let ul = document.createElement('ul')
     let li = document.createElement('li')
     let button = document.createElement('button')
@@ -99,7 +104,7 @@ function createRecipeForm() {
 
     let recipeDiv = document.createElement('div')
 
-    let recipeNameInput = document.createElement("input") // input element/text
+    let recipeNameInput = document.createElement('input') // input element/text
     recipeNameInput.setAttribute('type',"text")
     recipeNameInput.setAttribute('name',"recipe-name")
     recipeNameInput.id = "recipe-name"
@@ -107,7 +112,7 @@ function createRecipeForm() {
     
     let recipeDescriptionInput = document.createElement("input") // input element/text
     recipeDescriptionInput.setAttribute('type',"text")
-    recipeDescriptionInput.setAttribute('name',"recipe-name")
+    recipeDescriptionInput.setAttribute('name',"recipe-description")
     recipeDescriptionInput.id = "recipe-description"
     recipeDescriptionInput.placeholder = "Recipe Description"
 
@@ -126,10 +131,46 @@ function createRecipeForm() {
 function createRecipe(e) {
     e.preventDefault();
 
-    let recipe = {
-        name: recipeName().value,
-        description: recipeDescription().value
+    let strongParams = {
+        recipe: { //require recipe and permit name and desc
+            name: recipeName().value,
+            description: recipeDescription().value
+        }
     }
-    // recipes.push(recipe) //save
-    displayRecipe(recipe)
+    //send to back end // POST recipe
+    fetch(RECIPES_URL, {
+        method: "POST",
+        headers: {
+            "Accept": "application/json",
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify(strongParams)
+    })
+    .then(resp => resp.json())
+    .then(recipe => { 
+        displayRecipe(recipe)
+    })
+    resetInputs()
+}
+
+function resetInputs() {
+    recipeName().value = ""
+    recipeDescription().value = ""
+}
+
+// DELETE Recipe
+function deleteRecipe(id){
+    // e.preventDefault();
+
+    let recipeId = `${RECIPES_URL}/${id}`
+    fetch(recipeId, {
+        method: "DELETE",
+        headers: {
+            "Accept": "application/json",
+            "Content-Type": "application/json"            
+        }
+    })
+    .then(resp => resp.json())
+    .then(object => document.getElementById(object.id))
+    this.location.reload();
 }

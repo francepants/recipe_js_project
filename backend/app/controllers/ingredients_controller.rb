@@ -3,15 +3,16 @@ class IngredientsController < ApplicationController
 
   # GET /ingredients
   def index
-    @ingredients = Ingredient.all
+    @ingredients = Ingredient.where("recipe_id = ?", params[:recipe_id])
+    #@ingredients = Ingredient.find_by(recipe_id: params[:recipe_id]).limit(255)
+      #@Ingredients = Ingredient.find_by(params[:recipe_id])
+      #@ingredients = Ingredient.all
+    if @ingredients.empty?
+      @ingredients = Ingredient.all
+    end
     render json: @ingredients
-    # @ingredients = Ingredient.where("recipe_id = ?", params[:recipe_id])
-    # #@ingredients = Ingredient.find_by(recipe_id: params[:recipe_id]).limit(255)
-    #   #@Ingredients = Ingredient.find_by(params[:recipe_id])
-    #   #@ingredients = Ingredient.all
-    # if @ingredients.empty?
-    #   @ingredients = Ingredient.all
-    # end
+    
+    # @ingredients = Ingredient.all
   end
 
   # GET /ingredients/1

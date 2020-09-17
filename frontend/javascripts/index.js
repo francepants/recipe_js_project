@@ -2,13 +2,16 @@ const BASE_URL = "http://localhost:3000"
 const RECIPES_URL = "http://localhost:3000/recipes"
 const INGREDIENTS_URL = "http://localhost:3000/ingredients"
 const main = document.querySelector('div#main')
+const recipeSubmitButton = () => document.getElementById('submit-recipe')
+
+let editing = false
+let editedRecipeId = null
 
 const form = () => document.getElementById('recipe-form')
 const recipeName = () => document.getElementById('recipe-name')
 const recipeDescription = () => document.getElementById('recipe-description')
-// let recipes = []
 
-
+////////////////////////////////////////////////////////////
 document.addEventListener('DOMContentLoaded', handleEvents())
 
 function handleEvents() {
@@ -17,22 +20,13 @@ function handleEvents() {
     form().addEventListener('submit', createRecipe)
 }
 
+////////////////////////////////////////////////////////////
 // recipes
 function loadRecipes() {
     fetch(RECIPES_URL)
     .then(resp => resp.json())
     .then(recipes => displayRecipes(recipes))
 }
-    // .then(rec => rec.forEach(recipe => {
-    //     let recipes = Recipes.create(recipe.id, recipe.name, recipe.description, recipe.cooking_time, recipe.directions)
-    //     displayRecipes(recipes)
-    //     }))
-    ///////
-    // .then(function(recipes){
-    //     recipes.forEach(function(recipe){
-    //         displayRecipe(recipe)  //displayRecipe(recipe) - singular, shows seed data
-    //     })
-    // })
 
 function displayRecipes(recipes) {
     recipes.forEach(recipe => displayRecipe(recipe))
@@ -49,42 +43,48 @@ function displayRecipe(recipe){
     let p = document.createElement('p')
     p.innerText = recipe.description
 
-    //click event loads ingredients over and over every time the button is pressed // need it to load certain recipes ingredients using recipe_id
     let seeIngredientsButton = document.createElement('button')
     seeIngredientsButton.innerText = "See ingredients"
     seeIngredientsButton.addEventListener('click', loadIngredients) 
     
     let deleteRecipeButton = document.createElement('button')
-    deleteRecipeButton.setAttribute("data-id", recipe.id)
     deleteRecipeButton.innerText = "Delete"
     deleteRecipeButton.className = "delete"
-    deleteRecipeButton.addEventListener('click', () =>{
-        deleteRecipe(deleteRecipeButton.getAttribute("data-id"))
-    })
+    deleteRecipeButton.id = recipe.id
+    deleteRecipeButton.addEventListener('click', deleteRecipe)
+
+    let editRecipeButton = document.createElement('button')
+    editRecipeButton.innerText = "Edit"
+    editRecipeButton.className = "edit"
+    editRecipeButton.id = recipe.id
+    editRecipeButton.addEventListener('click', editRecipe)
+
     div.appendChild(h3)
     div.appendChild(p)
     div.appendChild(seeIngredientsButton)
+    div.appendChild(editRecipeButton)
     div.appendChild(deleteRecipeButton)
-    // recipeListDiv.appendChild(div)
     main.appendChild(div)
 }
 
+////////////////////////////////////////////////////////////
 // ingredients //needs work
-function loadIngredients(ingredients) {
-    
+function loadIngredients(e) {
+    // debugger
     fetch(INGREDIENTS_URL)
     .then(resp => resp.json())
-    .then(function(ingredients){
-        ingredients.forEach(function(ingredient){
-            displayIngredients(ingredient)
+    .then(function(recipe){
+        recipe.forEach(function(ingredients){
+            displayIngredients(ingredients)
         })
     })
 }
 
-function displayIngredients(ingredients){
+function displayIngredients(e){
+    // debugger
     let ul = document.createElement('ul')
     let li = document.createElement('li')
-    let button = document.createElement('button')
+    // let button = document.createElement('button')
     
     ul.innerText = "Ingredients:"
     li.innerText = ingredients.ingredient_name
@@ -92,14 +92,13 @@ function displayIngredients(ingredients){
 
     ul.appendChild(li) 
     main.appendChild(ul)
+
 }
 
-
+////////////////////////////////////////////////////////////
 // create recipe form
 function createRecipeForm() {
     let recipeForm = document.createElement('form')
-    // recipeForm.setAttribute('method',"post")
-    // recipeForm.setAttribute('action',"submit")
     recipeForm.id = "recipe-form"
 
     let recipeDiv = document.createElement('div')
@@ -116,9 +115,12 @@ function createRecipeForm() {
     recipeDescriptionInput.id = "recipe-description"
     recipeDescriptionInput.placeholder = "Recipe Description"
 
-    let recipeSubmitButton = document.createElement("input") // submit button
-    recipeSubmitButton.setAttribute('type',"submit")
-    recipeSubmitButton.setAttribute('value',"Create Recipe")
+    let recipeSubmitButton = document.createElement("button") // submit button
+    recipeSubmitButton.id = "submit-recipe"
+    recipeSubmitButton.innerText = "Submit Recipe"
+    recipeSubmitButton.className = "submit-recipe"
+
+
 
     recipeForm.appendChild(recipeDiv)
     recipeForm.appendChild(recipeNameInput)
@@ -127,50 +129,97 @@ function createRecipeForm() {
 
     document.getElementById('main').appendChild(recipeForm);
 }
-
+////////////////////////////////////////////////////////////
 function createRecipe(e) {
     e.preventDefault();
 
-    let strongParams = {
-        recipe: { //require recipe and permit name and desc
-            name: recipeName().value,
-            description: recipeDescription().value
+    if(editing) {
+        updateRecipe()
+    } else {
+        let strongParams = {
+            recipe: { //require recipe and permit name and desc
+                name: recipeName().value,
+                description: recipeDescription().value
+            }
+        }
+        //send to back end // POST recipe
+        fetch(RECIPES_URL, {
+            method: "POST",
+            headers: {
+                "Accept": "application/json",
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify(strongParams)
+        })
+        .then(resp => resp.json())
+        .then(recipe => { 
+            displayRecipe(recipe)
+        })
+        resetInputs()
+    }
+
+}
+////////////////////////////////////////////////////////////
+function resetInputs() {
+    recipeName().value = ""
+    recipeDescription().value = ""
+    recipeSubmitButton().innerText = "Add Recipe"
+}
+
+////////////////////////////////////////////////////////////
+// DELETE Recipe
+function deleteRecipe(e){
+    this.id 
+    this.parentNode
+    // debugger
+    fetch(RECIPES_URL + "/" +(this.id), {
+        method: "DELETE"
+    })
+    .then(resp => resp.json())
+    .then(data => {
+        this.parentNode.remove()
+    })
+}
+// edit Recipe
+function editRecipe(e){
+    // debugger
+    editing = true
+    recipeName().value = this.parentNode.querySelector('h3').innerText
+    recipeDescription().value = this.parentNode.querySelector('p').innerText
+    recipeSubmitButton().innerText = "Edit Recipe"
+
+    editedRecipeId = this.id
+}
+// update recipe
+function updateRecipe(e) {
+    let name = recipeName().value
+    let description = recipeDescription().value
+
+    const strongParams = {
+        recipe: {
+            name: name,
+            description: description
         }
     }
-    //send to back end // POST recipe
-    fetch(RECIPES_URL, {
-        method: "POST",
+    fetch(RECIPES_URL + "/" + editedRecipeId, {
+        method: "PATCH",
         headers: {
-            "Accept": "application/json",
-            "Content-Type": "application/json"
+            'Accept': "application/json",
+            'Content-Type': "application/json"
         },
         body: JSON.stringify(strongParams)
     })
     .then(resp => resp.json())
-    .then(recipe => { 
-        displayRecipe(recipe)
+    .then(data => {
+        // debugger
+        const div = document.getElementById(editedRecipeId)
+        div.querySelector('h3').innerText = data.name
+        div.querySelector('p').innerText = data.description
+
+        editing = false
+        editedRecipeId = null
+        resetInputs()
+        // recipeSubmitButton().innerText = "Update Recipe"
     })
-    resetInputs()
 }
 
-function resetInputs() {
-    recipeName().value = ""
-    recipeDescription().value = ""
-}
-
-// DELETE Recipe
-function deleteRecipe(id){
-    // e.preventDefault();
-
-    let recipeId = `${RECIPES_URL}/${id}`
-    fetch(recipeId, {
-        method: "DELETE",
-        headers: {
-            "Accept": "application/json",
-            "Content-Type": "application/json"            
-        }
-    })
-    .then(resp => resp.json())
-    .then(object => document.getElementById(object.id))
-    this.location.reload();
-}

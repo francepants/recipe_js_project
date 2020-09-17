@@ -13,7 +13,7 @@ class Recipes {
 
 
     static create(id, name, description, cooking_time, directions){
-        let recipe = new Recipes(id, name, description, cooking_time, directions)
+        let recipe = new Recipes(id, name, description, cooking_time, directions, ingredients)
             Recipes.all.push(recipe)
             return recipe
     }

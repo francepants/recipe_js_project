@@ -32,3 +32,17 @@
 
 /////
 loads ingredients over and over, but i need it to load certain recipes ingredients using recipe_id
+
+
+//////////
+inside display recipe
+    // deleteRecipeButton.setAttribute("data-id", recipe.id)
+
+
+////////// delete recipe
+    // fetch(`${RECIPES_URL}/${id}`, {
+    //     method: "DELETE"
+    // })
+    // .then(resp => resp.json())
+    // .then(object => document.getElementById(object.id))
+    // this.location.reload();

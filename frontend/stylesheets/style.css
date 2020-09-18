@@ -15,6 +15,40 @@ body {
     font-family: 'Montserrat', sans-serif;
 }
 
+input {
+    width: 100%;
+    padding: 12px 20px;
+    margin: 8px 0;
+    box-sizing: border-box;
+    border: 4px solid #8e9397;
+    border-radius: 4px;
+    background-color: #ffdbc5;
+    color: #00334e;
+}
+
+#recipe-description {
+    rows: "4";
+    cols: "50"
+}
+
+button {
+    background-color: #ffdbc5
+    transition-duration: 0.4s;
+    border: none;
+    border-radius: 12px;
+    color: #8e9397;
+    padding: 10px 24px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 15px;
+}
+
+button:hover {
+    background-color: #ffdbc5;
+    border: none;
+}
+
 .welcome-text {
     font-size: 70px;
     text-align: center;
@@ -36,4 +70,5 @@ body {
 #recipe-form {
 
     text-align: center;
+    display: none;
 }

@@ -8,21 +8,31 @@
         - measurement:string
         - cooking time:integer
         - directions:text
-
-- recipe has many ingredients
-- ingredients belong to recipe
+- relationship
+    - recipe has many ingredients
+    - ingredients belong to recipe
 
 ## Ideas
 - add recipes
+    - show/hide
+    - add new
+- edit/update 
+    - need to fix this button to change to the correct text
+    - when edit button is clicked - go to edit section
+- delete
 - list ingredients to the recipes
 - up vote them
 
 
 ## Buttons
-- add recipe
-- edit recipe        
-- delete recipe
-- same for ingredients 
+recipe
+[x] add recipe 
+[x] edit recipe       
+[x] delete recipe
+ingredients
+[] add ingredients
+[] edit ingredients 
+[] delete ingredients
 
 ## brainstorm
 - what should happen

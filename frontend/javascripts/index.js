@@ -21,6 +21,8 @@ document.addEventListener('DOMContentLoaded', handleEvents())
 
 function handleEvents() {
     // loadRecipes()
-    createRecipeForm()
-    form().addEventListener('submit', createRecipe)
+    Recipes.createRecipeForm()
+    form().addEventListener('submit', Recipes.createRecipe)
 }
+
+Recipes.loadRecipes()

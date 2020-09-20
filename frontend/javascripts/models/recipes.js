@@ -11,99 +11,87 @@ class Recipes {
         Recipes.all.push(this)
     }
 
+    //load recipe
     static loadRecipes() {
         fetch("http://localhost:3000/recipes")
         .then(resp => resp.json())
         .then(recipes => recipes.forEach(recipe => displayRecipe(recipe)))
     }
-    // static create(id, name, description, cooking_time, directions, ingredients){
-    //     let recipe = new Recipes(id, name, description, cooking_time, directions, ingredients)
-    //         Recipes.all.push(recipe)
-    //         return recipe
-    // }
-}
 
-////////////////////////////////////////////////////////////// load recipes
-Recipes.loadRecipes()
-// function loadRecipes(e) {
-//     fetch(RECIPES_URL)
-//     .then(resp => resp.json())
-//     .then(recipes => recipes.forEach(recipe => displayRecipe(recipe)))
-// }
-
-////////////////////////////////////////////////////////////// create recipe form
-function createRecipeForm() {
-    let recipeForm = document.createElement('form')
-    recipeForm.id = "recipe-form"
-
-    let recipeDiv = document.createElement('div')
-    recipeDiv.id = "recipe-form-div"
-
-    let recipeNameInput = document.createElement('input')// input element/text
-    recipeNameInput.setAttribute('type',"text")
-    recipeNameInput.setAttribute('name',"recipe-name")
-    recipeNameInput.id = "recipe-name"
-    recipeNameInput.placeholder = "Recipe Name"
-    recipeNameInput.required = true
+    //create recipe FORM
+    static createRecipeForm() {
+        let recipeForm = document.createElement('form')
+        recipeForm.id = "recipe-form"
     
-    let recipeDescriptionInput = document.createElement("input") // input element/text
-    recipeDescriptionInput.setAttribute('type',"text")
-    recipeDescriptionInput.setAttribute('name',"recipe-description")
-    recipeDescriptionInput.id = "recipe-description"
-    recipeDescriptionInput.placeholder = "Recipe Description"
-    recipeDescriptionInput.required = true
-
-    // let recipeCookingTimeInput = document.createElement("input") // input element/text
-    // recipeCookingTimeInput.setAttribute('type',"text")
-    // recipeCookingTimeInput.setAttribute('name',"recipe-cooking_time")
-    // recipeCookingTimeInput.id = "recipe-cooking_time"
-    // recipeCookingTimeInput.placeholder = "Recipe Cook Time"
-
-    let recipeSubmitButton = document.createElement("button") // submit button
-    recipeSubmitButton.id = "submit-recipe"
-    recipeSubmitButton.innerText = "Submit Recipe"
-    recipeSubmitButton.className = "submit-recipe"
-
-    recipeForm.appendChild(recipeDiv)
-    recipeForm.appendChild(recipeNameInput)
-    recipeForm.appendChild(recipeDescriptionInput)
-    // recipeForm.appendChild(recipeCookingTimeInput)
-    recipeForm.appendChild(recipeSubmitButton)
-
-    document.getElementById('main').appendChild(recipeForm);
-}
-
-////////////////////////////////////////////////////////////// create recipe
-function createRecipe(e) {
-    e.preventDefault();
-
-    if(editing) {
-        updateRecipe()
-    } else {
-        let strongParams = {
-            recipe: { //require recipe and permit name and desc
-                name: recipeName().value,
-                description: recipeDescription().value
-                // cooking_time: recipeCookTime().value
-            }
-        }
-        //send to back end // POST recipe
-        fetch(RECIPES_URL, {
-            method: "POST",
-            headers: {
-                "Accept": "application/json",
-                "Content-Type": "application/json"
-            },
-            body: JSON.stringify(strongParams)
-        })
-        .then(resp => resp.json())
-        .then(recipe => { 
-            displayRecipe(recipe)
-        })
-        resetInputs()
+        let recipeDiv = document.createElement('div')
+        recipeDiv.id = "recipe-form-div"
+    
+        let recipeNameInput = document.createElement('input')// input element/text
+        recipeNameInput.setAttribute('type',"text")
+        recipeNameInput.setAttribute('name',"recipe-name")
+        recipeNameInput.id = "recipe-name"
+        recipeNameInput.placeholder = "Recipe Name"
+        recipeNameInput.required = true
+        
+        let recipeDescriptionInput = document.createElement("input") // input element/text
+        recipeDescriptionInput.setAttribute('type',"text")
+        recipeDescriptionInput.setAttribute('name',"recipe-description")
+        recipeDescriptionInput.id = "recipe-description"
+        recipeDescriptionInput.placeholder = "Recipe Description"
+        recipeDescriptionInput.required = true
+    
+        // let recipeCookingTimeInput = document.createElement("input") // input element/text
+        // recipeCookingTimeInput.setAttribute('type',"text")
+        // recipeCookingTimeInput.setAttribute('name',"recipe-cooking_time")
+        // recipeCookingTimeInput.id = "recipe-cooking_time"
+        // recipeCookingTimeInput.placeholder = "Recipe Cook Time"
+    
+        let recipeSubmitButton = document.createElement("button") // submit button
+        recipeSubmitButton.id = "submit-recipe"
+        recipeSubmitButton.innerText = "Submit Recipe"
+        recipeSubmitButton.className = "submit-recipe"
+    
+        recipeForm.appendChild(recipeDiv)
+        recipeForm.appendChild(recipeNameInput)
+        recipeForm.appendChild(recipeDescriptionInput)
+        // recipeForm.appendChild(recipeCookingTimeInput)
+        recipeForm.appendChild(recipeSubmitButton)
+    
+        document.getElementById('main').appendChild(recipeForm);
     }
 
+    static createRecipe(e) {
+        e.preventDefault();
+    
+        if(editing) {
+            updateRecipe()
+        } else {
+            let strongParams = {
+                recipe: { //require recipe and permit name and desc
+                    name: recipeName().value,
+                    description: recipeDescription().value
+                    // cooking_time: recipeCookTime().value
+                }
+                
+            }
+            //send to back end // POST recipe
+            fetch(RECIPES_URL, {
+                method: "POST",
+                headers: {
+                    "Accept": "application/json",
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify(strongParams)
+            })
+            .then(resp => resp.json())
+            .then(recipe => { 
+                displayRecipe(recipe)
+            })
+            resetInputs()
+        }
+    }
 }
+
 
 ////////////////////////////////////////////////////////////// display recipe
 function displayRecipe(recipe){
@@ -122,7 +110,7 @@ function displayRecipe(recipe){
 
     let addIngredientsButton = document.createElement('button')
     addIngredientsButton.innerText = "Add ingredients"
-    addIngredientsButton.addEventListener('click', createIngredientsForm)
+    addIngredientsButton.addEventListener('click', Ingredients.createIngredientsForm)
 
     let ingredientFormDiv = document.createElement('div') //where the ingredient form is
     ingredientFormDiv.id = "ingredient-form-div"

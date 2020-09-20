@@ -25,63 +25,87 @@ class Ingredients {
             })
         })
     }
+
+    //create ingredients FORM
+    static createIngredientsForm(e) {
+        let ingredientsForm = document.createElement('form')
+        ingredientsForm.id = "ingredient-form"
+        ingredientsForm.addEventListener('submit', createIngredients)
+        
+        let ingredientDiv = document.createElement('div')
+        
+        let ingredientNameInput = document.createElement('input')// input element/text
+        ingredientNameInput.setAttribute('type',"text")
+        ingredientNameInput.setAttribute('name',"ingredient-name")
+        ingredientNameInput.id = "ingredient-name"
+        ingredientNameInput.placeholder = "Ingredient Name"
+        ingredientNameInput.required = true
+        
+        let ingredientMeasurementInput = document.createElement("input") // input element/text
+        ingredientMeasurementInput.setAttribute('type',"text")
+        ingredientMeasurementInput.setAttribute('name',"ingredient-measurement")
+        ingredientMeasurementInput.id = "ingredient-measurement"
+        ingredientMeasurementInput.placeholder = "Ingredient Measurement"
+        ingredientMeasurementInput.required = true
+        
+        let ingredientSubmitButton = document.createElement("button") // submit button
+        ingredientSubmitButton.id = "submit-ingredient"
+        ingredientSubmitButton.innerText = "Submit Ingredient"
+        ingredientSubmitButton.className = "submit-ingredient"
+        
+        ingredientsForm.appendChild(ingredientDiv)
+        ingredientsForm.appendChild(ingredientNameInput)
+        ingredientsForm.appendChild(ingredientMeasurementInput)
+        // recipeForm.appendChild(recipeCookingTimeInput)
+        ingredientsForm.appendChild(ingredientSubmitButton)
+        
+        //grabs the div from recipe.js
+        let ingredientFormDiv = this.parentNode.querySelector("#ingredient-form-div") 
+        ingredientFormDiv.innerHTML = ""
+        ingredientFormDiv.appendChild(ingredientsForm)
+        currentRecipeId = this.parentNode.id
+    }
 }
-
-////////////////////////////////////////////////////////////// load ingredients
-// function loadIngredients(e) {
-//     let parentNode = this.parentNode
-//     // http://localhost:3000/recipes/1
-//     fetch(`http://localhost:3000/recipes/${this.id}`)
-//     .then(resp => resp.json())
-//     .then(function(recipe){
-//         let ingredientForRecipeDiv = parentNode.querySelector('#ingredient-for-recipe-div')
-//         ingredientForRecipeDiv.innerHTML = ""
-//         recipe.ingredients.forEach(function(ing){
-//             displayIngredient(parentNode, ing)
-//         })
-//     })
-// }
-
 
 ////////////////////////////////////////////////////////////// add/create ingredients FORM
-function createIngredientsForm(e) {
-    let ingredientsForm = document.createElement('form')
-    ingredientsForm.id = "ingredient-form"
-    ingredientsForm.addEventListener('submit', createIngredients)
+// function createIngredientsForm(e) {
+//     let ingredientsForm = document.createElement('form')
+//     ingredientsForm.id = "ingredient-form"
+//     ingredientsForm.addEventListener('submit', createIngredients)
     
-    let ingredientDiv = document.createElement('div')
+//     let ingredientDiv = document.createElement('div')
     
-    let ingredientNameInput = document.createElement('input')// input element/text
-    ingredientNameInput.setAttribute('type',"text")
-    ingredientNameInput.setAttribute('name',"ingredient-name")
-    ingredientNameInput.id = "ingredient-name"
-    ingredientNameInput.placeholder = "Ingredient Name"
-    ingredientNameInput.required = true
+//     let ingredientNameInput = document.createElement('input')// input element/text
+//     ingredientNameInput.setAttribute('type',"text")
+//     ingredientNameInput.setAttribute('name',"ingredient-name")
+//     ingredientNameInput.id = "ingredient-name"
+//     ingredientNameInput.placeholder = "Ingredient Name"
+//     ingredientNameInput.required = true
     
-    let ingredientMeasurementInput = document.createElement("input") // input element/text
-    ingredientMeasurementInput.setAttribute('type',"text")
-    ingredientMeasurementInput.setAttribute('name',"ingredient-measurement")
-    ingredientMeasurementInput.id = "ingredient-measurement"
-    ingredientMeasurementInput.placeholder = "Ingredient Measurement"
-    ingredientMeasurementInput.required = true
+//     let ingredientMeasurementInput = document.createElement("input") // input element/text
+//     ingredientMeasurementInput.setAttribute('type',"text")
+//     ingredientMeasurementInput.setAttribute('name',"ingredient-measurement")
+//     ingredientMeasurementInput.id = "ingredient-measurement"
+//     ingredientMeasurementInput.placeholder = "Ingredient Measurement"
+//     ingredientMeasurementInput.required = true
     
-    let ingredientSubmitButton = document.createElement("button") // submit button
-    ingredientSubmitButton.id = "submit-ingredient"
-    ingredientSubmitButton.innerText = "Submit Ingredient"
-    ingredientSubmitButton.className = "submit-ingredient"
+//     let ingredientSubmitButton = document.createElement("button") // submit button
+//     ingredientSubmitButton.id = "submit-ingredient"
+//     ingredientSubmitButton.innerText = "Submit Ingredient"
+//     ingredientSubmitButton.className = "submit-ingredient"
     
-    ingredientsForm.appendChild(ingredientDiv)
-    ingredientsForm.appendChild(ingredientNameInput)
-    ingredientsForm.appendChild(ingredientMeasurementInput)
-    // recipeForm.appendChild(recipeCookingTimeInput)
-    ingredientsForm.appendChild(ingredientSubmitButton)
+//     ingredientsForm.appendChild(ingredientDiv)
+//     ingredientsForm.appendChild(ingredientNameInput)
+//     ingredientsForm.appendChild(ingredientMeasurementInput)
+//     // recipeForm.appendChild(recipeCookingTimeInput)
+//     ingredientsForm.appendChild(ingredientSubmitButton)
     
-    //grabs the div from recipe.js
-    let ingredientFormDiv = this.parentNode.querySelector("#ingredient-form-div") 
-    ingredientFormDiv.innerHTML = ""
-    ingredientFormDiv.appendChild(ingredientsForm)
-    currentRecipeId = this.parentNode.id
-}
+//     //grabs the div from recipe.js
+//     let ingredientFormDiv = this.parentNode.querySelector("#ingredient-form-div") 
+//     ingredientFormDiv.innerHTML = ""
+//     ingredientFormDiv.appendChild(ingredientsForm)
+//     currentRecipeId = this.parentNode.id
+// }
 
 ////////////////////////////////////////////////////////////// create ingredients
 function createIngredients(e) {
@@ -107,7 +131,7 @@ function createIngredients(e) {
         let parentNode = document.getElementById(currentRecipeId)
         displayIngredient(parentNode, ingredient)
     })
-    resetInputs()
+    resetIngInputs()
 }
 
 ////////////////////////////////////////////////////////////// display ingredients
@@ -120,4 +144,9 @@ function displayIngredient(parentNode, ing){
     ingredientForRecipeDiv.appendChild(li)
 }
 
-
+////////////////////////////////////////////////////////////// reset inputs
+function resetIngInputs() {
+    ingredientName().value = ""
+    ingredientMeasurement().value = ""
+    // recipeSubmitButton().innerText = "Add Recipe"
+}

@@ -11,16 +11,20 @@ class Recipes {
         Recipes.all.push(this)
     }
 
-
-    static create(id, name, description, cooking_time, directions, ingredients){
-        let recipe = new Recipes(id, name, description, cooking_time, directions, ingredients)
-            Recipes.all.push(recipe)
-            return recipe
+    static loadRecipes() {
+        fetch("http://localhost:3000/recipes")
+        .then(resp => resp.json())
+        .then(recipes => recipes.forEach(recipe => displayRecipe(recipe)))
     }
+    // static create(id, name, description, cooking_time, directions, ingredients){
+    //     let recipe = new Recipes(id, name, description, cooking_time, directions, ingredients)
+    //         Recipes.all.push(recipe)
+    //         return recipe
+    // }
 }
 
 ////////////////////////////////////////////////////////////// load recipes
-API.loadRecipes()
+Recipes.loadRecipes()
 // function loadRecipes(e) {
 //     fetch(RECIPES_URL)
 //     .then(resp => resp.json())
@@ -129,7 +133,7 @@ function displayRecipe(recipe){
     let seeIngredientsButton = document.createElement('button')
     seeIngredientsButton.innerText = "See ingredients"
     seeIngredientsButton.id = recipe.id
-    seeIngredientsButton.addEventListener('click', API.loadIngredients)
+    seeIngredientsButton.addEventListener('click', Ingredients.loadIngredients)
     
     let deleteRecipeButton = document.createElement('button')
     deleteRecipeButton.innerText = "Delete"

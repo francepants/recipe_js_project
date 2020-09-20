@@ -6,10 +6,24 @@ class Ingredients {
         this.recipe_id = recipe_id;
     }
 
-    static create(id, ingredient_name, measurement, recipe_id){
-        let ingredient = new Ingredients(id, ingredient_name, measurement, recipe_id)
-            Ingredients.all.push(ingredient)
-            return ingredient
+    // static create(id, ingredient_name, measurement, recipe_id){
+    //     let ingredient = new Ingredients(id, ingredient_name, measurement, recipe_id)
+    //         Ingredients.all.push(ingredient)
+    //         return ingredient
+    // }
+
+    static loadIngredients(e) {
+        let parentNode = this.parentNode
+        // http://localhost:3000/recipes/1
+        fetch(`http://localhost:3000/recipes/${this.id}`)
+        .then(resp => resp.json())
+        .then(function(recipe){
+            let ingredientForRecipeDiv = parentNode.querySelector('#ingredient-for-recipe-div')
+            ingredientForRecipeDiv.innerHTML = ""
+            recipe.ingredients.forEach(function(ing){
+                displayIngredient(parentNode, ing)
+            })
+        })
     }
 }
 
@@ -27,6 +41,7 @@ class Ingredients {
 //         })
 //     })
 // }
+
 
 ////////////////////////////////////////////////////////////// add/create ingredients FORM
 function createIngredientsForm(e) {

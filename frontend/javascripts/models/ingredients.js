@@ -14,19 +14,19 @@ class Ingredients {
 }
 
 ////////////////////////////////////////////////////////////// load ingredients
-function loadIngredients(e) {
-    let parentNode = this.parentNode
-    // http://localhost:3000/recipes/1
-    fetch(`http://localhost:3000/recipes/${this.id}`)
-    .then(resp => resp.json())
-    .then(function(recipe){
-        let ingredientForRecipeDiv = parentNode.querySelector('#ingredient-for-recipe-div')
-        ingredientForRecipeDiv.innerHTML = ""
-        recipe.ingredients.forEach(function(ing){
-            displayIngredient(parentNode, ing)
-        })
-    })
-}
+// function loadIngredients(e) {
+//     let parentNode = this.parentNode
+//     // http://localhost:3000/recipes/1
+//     fetch(`http://localhost:3000/recipes/${this.id}`)
+//     .then(resp => resp.json())
+//     .then(function(recipe){
+//         let ingredientForRecipeDiv = parentNode.querySelector('#ingredient-for-recipe-div')
+//         ingredientForRecipeDiv.innerHTML = ""
+//         recipe.ingredients.forEach(function(ing){
+//             displayIngredient(parentNode, ing)
+//         })
+//     })
+// }
 
 ////////////////////////////////////////////////////////////// add/create ingredients FORM
 function createIngredientsForm(e) {

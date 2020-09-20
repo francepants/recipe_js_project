@@ -129,7 +129,7 @@ function displayRecipe(recipe){
     let seeIngredientsButton = document.createElement('button')
     seeIngredientsButton.innerText = "See ingredients"
     seeIngredientsButton.id = recipe.id
-    seeIngredientsButton.addEventListener('click', loadIngredients)
+    seeIngredientsButton.addEventListener('click', API.loadIngredients)
     
     let deleteRecipeButton = document.createElement('button')
     deleteRecipeButton.innerText = "Delete"

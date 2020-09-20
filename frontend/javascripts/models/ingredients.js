@@ -6,12 +6,7 @@ class Ingredients {
         this.recipe_id = recipe_id;
     }
 
-    // static create(id, ingredient_name, measurement, recipe_id){
-    //     let ingredient = new Ingredients(id, ingredient_name, measurement, recipe_id)
-    //         Ingredients.all.push(ingredient)
-    //         return ingredient
-    // }
-
+    //load ingredients
     static loadIngredients(e) {
         let parentNode = this.parentNode
         // http://localhost:3000/recipes/1
@@ -30,7 +25,7 @@ class Ingredients {
     static createIngredientsForm(e) {
         let ingredientsForm = document.createElement('form')
         ingredientsForm.id = "ingredient-form"
-        ingredientsForm.addEventListener('submit', createIngredients)
+        ingredientsForm.addEventListener('submit', Ingredients.createIngredients)
         
         let ingredientDiv = document.createElement('div')
         
@@ -65,74 +60,62 @@ class Ingredients {
         ingredientFormDiv.appendChild(ingredientsForm)
         currentRecipeId = this.parentNode.id
     }
+
+    //create ingredients
+    static createIngredients(e) {
+        e.preventDefault()
+        let strongParams = {
+            ingredient: { //require ingredients and permit name and measurement
+                ingredient_name: ingredientName().value,
+                measurement: ingredientMeasurement().value,
+                recipe_id: currentRecipeId
+            }
+        }
+        //send to back end // POST recipe
+        fetch(INGREDIENTS_URL, {
+            method: "POST",
+            headers: {
+                "Accept": "application/json",
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify(strongParams)
+        })
+        .then(resp => resp.json())
+        .then(ingredient => { 
+            let parentNode = document.getElementById(currentRecipeId)
+            displayIngredient(parentNode, ingredient)
+        })
+        resetIngInputs()
+    }
 }
 
-////////////////////////////////////////////////////////////// add/create ingredients FORM
-// function createIngredientsForm(e) {
-//     let ingredientsForm = document.createElement('form')
-//     ingredientsForm.id = "ingredient-form"
-//     ingredientsForm.addEventListener('submit', createIngredients)
-    
-//     let ingredientDiv = document.createElement('div')
-    
-//     let ingredientNameInput = document.createElement('input')// input element/text
-//     ingredientNameInput.setAttribute('type',"text")
-//     ingredientNameInput.setAttribute('name',"ingredient-name")
-//     ingredientNameInput.id = "ingredient-name"
-//     ingredientNameInput.placeholder = "Ingredient Name"
-//     ingredientNameInput.required = true
-    
-//     let ingredientMeasurementInput = document.createElement("input") // input element/text
-//     ingredientMeasurementInput.setAttribute('type',"text")
-//     ingredientMeasurementInput.setAttribute('name',"ingredient-measurement")
-//     ingredientMeasurementInput.id = "ingredient-measurement"
-//     ingredientMeasurementInput.placeholder = "Ingredient Measurement"
-//     ingredientMeasurementInput.required = true
-    
-//     let ingredientSubmitButton = document.createElement("button") // submit button
-//     ingredientSubmitButton.id = "submit-ingredient"
-//     ingredientSubmitButton.innerText = "Submit Ingredient"
-//     ingredientSubmitButton.className = "submit-ingredient"
-    
-//     ingredientsForm.appendChild(ingredientDiv)
-//     ingredientsForm.appendChild(ingredientNameInput)
-//     ingredientsForm.appendChild(ingredientMeasurementInput)
-//     // recipeForm.appendChild(recipeCookingTimeInput)
-//     ingredientsForm.appendChild(ingredientSubmitButton)
-    
-//     //grabs the div from recipe.js
-//     let ingredientFormDiv = this.parentNode.querySelector("#ingredient-form-div") 
-//     ingredientFormDiv.innerHTML = ""
-//     ingredientFormDiv.appendChild(ingredientsForm)
-//     currentRecipeId = this.parentNode.id
-// }
 
 ////////////////////////////////////////////////////////////// create ingredients
-function createIngredients(e) {
-    e.preventDefault()
-    let strongParams = {
-        ingredient: { //require ingredients and permit name and measurement
-            ingredient_name: ingredientName().value,
-            measurement: ingredientMeasurement().value,
-            recipe_id: currentRecipeId
-        }
-    }
-    //send to back end // POST recipe
-    fetch(INGREDIENTS_URL, {
-        method: "POST",
-        headers: {
-            "Accept": "application/json",
-            "Content-Type": "application/json"
-        },
-        body: JSON.stringify(strongParams)
-    })
-    .then(resp => resp.json())
-    .then(ingredient => { 
-        let parentNode = document.getElementById(currentRecipeId)
-        displayIngredient(parentNode, ingredient)
-    })
-    resetIngInputs()
-}
+// function createIngredients(e) {
+//     e.preventDefault()
+//     let strongParams = {
+//         ingredient: { //require ingredients and permit name and measurement
+//             ingredient_name: ingredientName().value,
+//             measurement: ingredientMeasurement().value,
+//             recipe_id: currentRecipeId
+//         }
+//     }
+//     //send to back end // POST recipe
+//     fetch(INGREDIENTS_URL, {
+//         method: "POST",
+//         headers: {
+//             "Accept": "application/json",
+//             "Content-Type": "application/json"
+//         },
+//         body: JSON.stringify(strongParams)
+//     })
+//     .then(resp => resp.json())
+//     .then(ingredient => { 
+//         let parentNode = document.getElementById(currentRecipeId)
+//         displayIngredient(parentNode, ingredient)
+//     })
+//     resetIngInputs()
+// }
 
 ////////////////////////////////////////////////////////////// display ingredients
 function displayIngredient(parentNode, ing){

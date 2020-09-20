@@ -114,13 +114,8 @@ function createIngredients(e) {
 function displayIngredient(parentNode, ing){
     // let ul = document.createElement('ul')
     let li = document.createElement('li')
-    let button = document.createElement('button')
-
     li.innerText = `${ing.ingredient_name} - ${ing.measurement}`
-    button.innerText = "See ingredients"
-
-    // ul.appendChild(li) 
-    // main.appendChild(ul)
+    
     let ingredientForRecipeDiv = parentNode.querySelector('#ingredient-for-recipe-div')
     ingredientForRecipeDiv.appendChild(li)
 }

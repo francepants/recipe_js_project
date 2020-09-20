@@ -16,7 +16,7 @@ class Ingredients {
             let ingredientForRecipeDiv = parentNode.querySelector('#ingredient-for-recipe-div')
             ingredientForRecipeDiv.innerHTML = ""
             recipe.ingredients.forEach(function(ing){
-                displayIngredient(parentNode, ing)
+                Ingredients.displayIngredient(parentNode, ing)
             })
         })
     }
@@ -83,48 +83,20 @@ class Ingredients {
         .then(resp => resp.json())
         .then(ingredient => { 
             let parentNode = document.getElementById(currentRecipeId)
-            displayIngredient(parentNode, ingredient)
+            Ingredients.displayIngredient(parentNode, ingredient)
         })
         resetIngInputs()
     }
-}
 
-
-////////////////////////////////////////////////////////////// create ingredients
-// function createIngredients(e) {
-//     e.preventDefault()
-//     let strongParams = {
-//         ingredient: { //require ingredients and permit name and measurement
-//             ingredient_name: ingredientName().value,
-//             measurement: ingredientMeasurement().value,
-//             recipe_id: currentRecipeId
-//         }
-//     }
-//     //send to back end // POST recipe
-//     fetch(INGREDIENTS_URL, {
-//         method: "POST",
-//         headers: {
-//             "Accept": "application/json",
-//             "Content-Type": "application/json"
-//         },
-//         body: JSON.stringify(strongParams)
-//     })
-//     .then(resp => resp.json())
-//     .then(ingredient => { 
-//         let parentNode = document.getElementById(currentRecipeId)
-//         displayIngredient(parentNode, ingredient)
-//     })
-//     resetIngInputs()
-// }
-
-////////////////////////////////////////////////////////////// display ingredients
-function displayIngredient(parentNode, ing){
-    // let ul = document.createElement('ul')
-    let li = document.createElement('li')
-    li.innerText = `${ing.ingredient_name} - ${ing.measurement}`
-    
-    let ingredientForRecipeDiv = parentNode.querySelector('#ingredient-for-recipe-div')
-    ingredientForRecipeDiv.appendChild(li)
+    // display ingredients
+    static displayIngredient(parentNode, ing){
+        // let ul = document.createElement('ul')
+        let li = document.createElement('li')
+        li.innerText = `${ing.ingredient_name} - ${ing.measurement}`
+        
+        let ingredientForRecipeDiv = parentNode.querySelector('#ingredient-for-recipe-div')
+        ingredientForRecipeDiv.appendChild(li)
+    }
 }
 
 ////////////////////////////////////////////////////////////// reset inputs

@@ -101,7 +101,7 @@ function displayIngredient(parentNode, ing){
     let li = document.createElement('li')
     let button = document.createElement('button')
 
-    li.innerText = `${ing.ingredient_name}, ${ing.measurement}`
+    li.innerText = `${ing.ingredient_name} - ${ing.measurement}`
     button.innerText = "See ingredients"
 
     // ul.appendChild(li) 

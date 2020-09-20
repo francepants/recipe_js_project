@@ -20,7 +20,7 @@ const ingredientMeasurement = () => document.getElementById('ingredient-measurem
 document.addEventListener('DOMContentLoaded', handleEvents())
 
 function handleEvents() {
-    loadRecipes()
+    // loadRecipes()
     createRecipeForm()
     form().addEventListener('submit', createRecipe)
 }

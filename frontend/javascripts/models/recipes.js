@@ -8,7 +8,6 @@ class Recipes {
         this.cooking_time = cooking_time;
         this.directions = directions;
         this.ingredients = ingredients;
-        debugger
         Recipes.all.push(this)
     }
 
@@ -21,11 +20,12 @@ class Recipes {
 }
 
 ////////////////////////////////////////////////////////////// load recipes
-function loadRecipes(e) {
-    fetch(RECIPES_URL)
-    .then(resp => resp.json())
-    .then(recipes => recipes.forEach(recipe => displayRecipe(recipe)))
-}
+API.loadRecipes()
+// function loadRecipes(e) {
+//     fetch(RECIPES_URL)
+//     .then(resp => resp.json())
+//     .then(recipes => recipes.forEach(recipe => displayRecipe(recipe)))
+// }
 
 ////////////////////////////////////////////////////////////// create recipe form
 function createRecipeForm() {

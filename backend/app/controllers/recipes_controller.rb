@@ -36,7 +36,7 @@ class RecipesController < ApplicationController
   # DELETE /recipes/1
   def destroy
     @recipe.destroy
-    render json: @recipe
+    render json: @recipe, include: :ingredients
   end
 
   private

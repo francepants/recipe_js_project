@@ -16,7 +16,7 @@ class Recipes {
         .then(data => {
             Recipes.createRecipes(data)
             Recipes.displayRecipes()
-            Recipes.searchRecipes(filteredRecipes)
+            Recipes.searchRecipes()
         })
     }
 
@@ -62,7 +62,6 @@ class Recipes {
 
     static create(id, name, description){
         let recipe = new Recipes(id, name, description)
-
         Recipes.all.push(recipe) //shows recipes on page
         return recipe
     }
@@ -80,7 +79,6 @@ class Recipes {
                     name: recipeName().value,
                     description: recipeDescription().value
                 }
-                
             }
             //send to back end // POST recipe
             fetch(RECIPES_URL, {
@@ -170,30 +168,10 @@ class Recipes {
             const searchedLetter = e.target.value //is case sensitive
             console.log(searchedLetter)
 
-            let filteredRecipes = Recipes.all.filter(data => {
-                // debugger
-                return data.name.startsWith(searchedLetter)
-            })
+            let filteredRecipes = Recipes.all.filter(data => data.name.startsWith(searchedLetter))
             console.log(filteredRecipes)
-            // Recipes.displayRecipes(filteredRecipes)
-            // Recipes.displaySearchedRecipe(filteredRecipes)
         })
-        // data.filter(x => x.title.toLowerCase().includes(term.toLowerCase()))
-    }
     
-    static displaySearchedRecipe = recipes => {
-        
-        const htmlRec = (recipes)
-            .map((recipe) => {
-                // debugger
-            return `
-                <div class="display-search">
-                    <h2>${recipe.name}</h2>
-                    <p>${recipe.description}</p>
-                </div>
-            `
-        })
-        main.innerHTML = htmlRec
     }
 }
 

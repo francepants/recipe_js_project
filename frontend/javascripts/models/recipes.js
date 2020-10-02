@@ -16,6 +16,7 @@ class Recipes {
         .then(data => {
             Recipes.createRecipes(data)
             Recipes.displayRecipes()
+            Recipes.searchRecipes(filteredRecipes)
         })
     }
 
@@ -55,6 +56,7 @@ class Recipes {
 
 
     static createRecipes(recipesData){
+        console.log(recipesData)
         recipesData.forEach(data => Recipes.create(data.id, data.name, data.description))
     }
 
@@ -100,11 +102,12 @@ class Recipes {
 
     // display all recipes
     static displayRecipes(){
-        Recipes.all.forEach(recipe => recipe.display())
+        Recipes.all.map(recipe => recipe.display())
     }
 
     // display recipe look
     display(){
+        // debugger
         let recDiv = document.createElement('div')
         recDiv.className = 'rec-div'
         recDiv.id = this.id
@@ -172,25 +175,28 @@ class Recipes {
                 return data.name.startsWith(searchedLetter)
             })
             console.log(filteredRecipes)
-            displaySearchedRecipe(filteredRecipes)
-            // filteredRecipes
+            // Recipes.displayRecipes(filteredRecipes)
+            // Recipes.displaySearchedRecipe(filteredRecipes)
         })
+        // data.filter(x => x.title.toLowerCase().includes(term.toLowerCase()))
+    }
+    
+    static displaySearchedRecipe = recipes => {
+        
+        const htmlRec = (recipes)
+            .map((recipe) => {
+                // debugger
+            return `
+                <div class="display-search">
+                    <h2>${recipe.name}</h2>
+                    <p>${recipe.description}</p>
+                </div>
+            `
+        })
+        main.innerHTML = htmlRec
     }
 }
 
-const displaySearchedRecipe = recipes => {
-    const htmlString = (recipes)
-        .map((recipe) => {
-        return `
-            <div class="display-search">
-                <h2>${recipe.name}</h2>
-                <p>${recipe.description}</p>
-            </div>
-        `
-    })
-    main.innerHTML = htmlString
-
-}
 
 
 // EDIT Recipe

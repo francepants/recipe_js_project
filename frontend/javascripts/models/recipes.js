@@ -1,21 +1,22 @@
 class Recipes {
     static all = []
 
-    constructor(id, name, description, cooking_time, directions, ingredients){
+    constructor(id, name, description, ingredients){
         this.id = id;
         this.name = name;
         this.description = description;
-        this.cooking_time = cooking_time;
-        this.directions = directions;
         this.ingredients = ingredients;
-        Recipes.all.push(this)
+        // Recipes.all.push(this)
     }
 
     //load recipe
     static loadRecipes() {
         fetch("http://localhost:3000/recipes")
         .then(resp => resp.json())
-        .then(recipes => recipes.forEach(recipe => displayRecipe(recipe)))
+        .then(data => {
+            Recipes.createRecipes(data)
+            Recipes.displayRecipes()
+        })
     }
 
     //create recipe FORM
@@ -40,12 +41,6 @@ class Recipes {
         recipeDescriptionInput.placeholder = "Recipe Description"
         recipeDescriptionInput.required = true
     
-        // let recipeCookingTimeInput = document.createElement("input") // input element/text
-        // recipeCookingTimeInput.setAttribute('type',"text")
-        // recipeCookingTimeInput.setAttribute('name',"recipe-cooking_time")
-        // recipeCookingTimeInput.id = "recipe-cooking_time"
-        // recipeCookingTimeInput.placeholder = "Recipe Cook Time"
-    
         let recipeSubmitButton = document.createElement("button") // submit button
         recipeSubmitButton.id = "submit-recipe"
         recipeSubmitButton.innerText = "Submit Recipe"
@@ -54,12 +49,24 @@ class Recipes {
         recipeForm.appendChild(recipeDiv)
         recipeForm.appendChild(recipeNameInput)
         recipeForm.appendChild(recipeDescriptionInput)
-        // recipeForm.appendChild(recipeCookingTimeInput)
         recipeForm.appendChild(recipeSubmitButton)
-    
         document.getElementById('main').appendChild(recipeForm);
     }
 
+
+    static createRecipes(recipesData){
+        recipesData.forEach(data => Recipes.create(data.id, data.name, data.description))
+    }
+
+    static create(id, name, description){
+        let recipe = new Recipes(id, name, description)
+
+        Recipes.all.push(recipe) //shows recipes on page
+        return recipe
+    }
+
+
+    //create recipe from form
     static createRecipe(e) {
         e.preventDefault();
     
@@ -70,7 +77,6 @@ class Recipes {
                 recipe: { //require recipe and permit name and desc
                     name: recipeName().value,
                     description: recipeDescription().value
-                    // cooking_time: recipeCookTime().value
                 }
                 
             }
@@ -84,71 +90,110 @@ class Recipes {
                 body: JSON.stringify(strongParams)
             })
             .then(resp => resp.json())
-            .then(recipe => { 
-                displayRecipe(recipe)
+            .then(data => { 
+                let recipe = Recipes.create(data.id, data.name, data.description)
+                recipe.display()
             })
             resetInputs()
         }
     }
+
+    // display all recipes
+    static displayRecipes(){
+        Recipes.all.forEach(recipe => recipe.display())
+    }
+
+    // display recipe look
+    display(){
+        let recDiv = document.createElement('div')
+        recDiv.className = 'rec-div'
+        recDiv.id = this.id
+        
+        let h3 = document.createElement('h3')
+        h3.innerText = this.name
+        
+        let p = document.createElement('p')
+        p.innerText = this.description
+
+        let addIngredientsButton = document.createElement('button')
+        addIngredientsButton.innerText = "Add ingredients"
+        addIngredientsButton.addEventListener('click', Ingredients.createIngredientsForm)
+
+        let ingredientFormDiv = document.createElement('div') //where the ingredient form is
+        ingredientFormDiv.id = "ingredient-form-div"
+
+        let ingredientForRecipeDiv = document.createElement('div') // for ingredients to display per recipe
+        ingredientForRecipeDiv.id = "ingredient-for-recipe-div"
+
+        let seeIngredientsButton = document.createElement('button')
+        seeIngredientsButton.innerText = "See ingredients"
+        seeIngredientsButton.id = this.id
+        seeIngredientsButton.addEventListener('click', Ingredients.loadIngredients)
+        
+        let deleteRecipeButton = document.createElement('button')
+        deleteRecipeButton.innerText = "Delete"
+        deleteRecipeButton.className = "delete"
+        deleteRecipeButton.id = this.id
+        deleteRecipeButton.addEventListener('click', deleteRecipe)
+
+        let editRecipeButton = document.createElement('button')
+        editRecipeButton.innerText = "Edit"
+        editRecipeButton.className = "edit"
+        editRecipeButton.id = this.id
+        editRecipeButton.addEventListener('click', editRecipe)
+
+        recDiv.appendChild(h3)
+        recDiv.appendChild(p)
+        recDiv.appendChild(addIngredientsButton)
+        recDiv.appendChild(seeIngredientsButton)
+        recDiv.appendChild(editRecipeButton)
+        recDiv.appendChild(deleteRecipeButton)
+        recDiv.appendChild(ingredientFormDiv)
+        recDiv.appendChild(ingredientForRecipeDiv)
+        
+        main.appendChild(recDiv)
+    }
+
+    // search
+    static searchRecipes() {
+        let getSearchFieldDiv = document.getElementById('search-field-div')
+        let searchField = document.createElement('input')
+        searchField.setAttribute('type',"text")
+        searchField.id = 'search-field'
+        searchField.placeholder = "Search Recipes"
+        getSearchFieldDiv.appendChild(searchField)
+        
+        searchField.addEventListener('keyup', function(e){
+            const searchedLetter = e.target.value //is case sensitive
+            console.log(searchedLetter)
+
+            let filteredRecipes = Recipes.all.filter(data => {
+                // debugger
+                return data.name.startsWith(searchedLetter)
+            })
+            console.log(filteredRecipes)
+            displaySearchedRecipe(filteredRecipes)
+            // filteredRecipes
+        })
+    }
+}
+
+const displaySearchedRecipe = recipes => {
+    const htmlString = (recipes)
+        .map((recipe) => {
+        return `
+            <div class="display-search">
+                <h2>${recipe.name}</h2>
+                <p>${recipe.description}</p>
+            </div>
+        `
+    })
+    main.innerHTML = htmlString
+
 }
 
 
-////////////////////////////////////////////////////////////// display recipe
-function displayRecipe(recipe){
-    let recDiv = document.createElement('div')
-    recDiv.className = 'rec-div'
-    recDiv.id = recipe.id
-    
-    let h3 = document.createElement('h3')
-    h3.innerText = recipe.name
-    
-    let p = document.createElement('p')
-    p.innerText = recipe.description
-    
-    // let ingredient_p = document.createElement('p') 
-    // ingredient_p.innerText = recipe.ingredients.map(ing => ing.ingredient_name)
-
-    let addIngredientsButton = document.createElement('button')
-    addIngredientsButton.innerText = "Add ingredients"
-    addIngredientsButton.addEventListener('click', Ingredients.createIngredientsForm)
-
-    let ingredientFormDiv = document.createElement('div') //where the ingredient form is
-    ingredientFormDiv.id = "ingredient-form-div"
-
-    let ingredientForRecipeDiv = document.createElement('div') // for ingredients to display per recipe
-    ingredientForRecipeDiv.id = "ingredient-for-recipe-div"
-
-    let seeIngredientsButton = document.createElement('button')
-    seeIngredientsButton.innerText = "See ingredients"
-    seeIngredientsButton.id = recipe.id
-    seeIngredientsButton.addEventListener('click', Ingredients.loadIngredients)
-    
-    let deleteRecipeButton = document.createElement('button')
-    deleteRecipeButton.innerText = "Delete"
-    deleteRecipeButton.className = "delete"
-    deleteRecipeButton.id = recipe.id
-    deleteRecipeButton.addEventListener('click', deleteRecipe)
-
-    let editRecipeButton = document.createElement('button')
-    editRecipeButton.innerText = "Edit"
-    editRecipeButton.className = "edit"
-    editRecipeButton.id = recipe.id
-    editRecipeButton.addEventListener('click', editRecipe)
-
-    recDiv.appendChild(h3)
-    recDiv.appendChild(p)
-    // recDiv.appendChild(ingredient_p)
-    recDiv.appendChild(addIngredientsButton)
-    recDiv.appendChild(seeIngredientsButton)
-    recDiv.appendChild(editRecipeButton)
-    recDiv.appendChild(deleteRecipeButton)
-    recDiv.appendChild(ingredientFormDiv)
-    recDiv.appendChild(ingredientForRecipeDiv)
-
-    main.appendChild(recDiv)
-}
-
-////////////////////////////////////////////////////////////// EDIT Recipe
+// EDIT Recipe
 function editRecipe(e){
     
     editing = true //prevents from making duplicate
@@ -159,7 +204,7 @@ function editRecipe(e){
     editedRecipeId = this.id
 }
 
-////////////////////////////////////////////////////////////// UPDATE recipe
+// UPDATE recipe
 function updateRecipe(e) {
     let name = recipeName().value
     let description = recipeDescription().value
@@ -191,13 +236,13 @@ function updateRecipe(e) {
     })
 }
 
-////////////////////////////////////////////////////////////// DELETE Recipe
+// DELETE Recipe
 function deleteRecipe(e){
-    this.id 
-    this.parentNode
-  
-    fetch(RECIPES_URL + "/" +(this.id), {
-        method: "DELETE"
+    fetch(RECIPES_URL + "/" +this.id, {
+        method: "DELETE",
+        headers: {
+            'Content-Type': "application/json"
+        }
     })
     .then(resp => resp.json())
     .then(data => {
@@ -205,14 +250,14 @@ function deleteRecipe(e){
     })
 }
 
-////////////////////////////////////////////////////////////// reset inputs
+// reset inputs
 function resetInputs() {
     recipeName().value = ""
     recipeDescription().value = ""
     recipeSubmitButton().innerText = "Add Recipe"
 }
 
-////////////////////////////////////////////////////////////// show/hide recipe form
+// show/hide recipe form
 function showHideAddRecipeButton(e) {
     let x = document.getElementById('recipe-form');
     if (x.style.display === "none") {

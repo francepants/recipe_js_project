@@ -56,3 +56,23 @@ inside display recipe
     // .then(resp => resp.json())
     // .then(object => document.getElementById(object.id))
     // this.location.reload();
+
+
+////////// search bar
+
+//filter recipes.all
+// no submit btn
+// function searchRecipes() {
+//     const searchedWord = Recipes.all.filter(word => )
+// }
+let searchField = document.createElement('input')
+searchField.setAttribute('type',"text")
+main.appendChild(searchField)
+// searchField.innerText = ''
+searchField.addEventListener('keydown', function(e){
+    // debugger
+    // if 3 letters = recipe names 3 letters 
+    console.log(e.target.value)
+    let searchedWords = Recipes.all.filter(letter => {return letter.startsWith(e.target.value)})
+    console.log(searchedWords)
+})

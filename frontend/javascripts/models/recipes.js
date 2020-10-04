@@ -6,7 +6,6 @@ class Recipes {
         this.name = name;
         this.description = description;
         this.ingredients = ingredients;
-        // Recipes.all.push(this)
     }
 
     //load recipe
@@ -16,7 +15,7 @@ class Recipes {
         .then(data => {
             Recipes.createRecipes(data)
             Recipes.displayRecipes()
-            Recipes.searchRecipes()
+            // Recipes.searchRecipes()
         })
     }
 
@@ -93,6 +92,7 @@ class Recipes {
             .then(data => { 
                 let recipe = Recipes.create(data.id, data.name, data.description)
                 recipe.display()
+                
             })
             resetInputs()
         }
@@ -165,13 +165,20 @@ class Recipes {
         getSearchFieldDiv.appendChild(searchField)
         
         searchField.addEventListener('keyup', function(e){
-            const searchedLetter = e.target.value //is case sensitive
+            const searchedLetter = e.target.value.toUpperCase() 
             console.log(searchedLetter)
 
-            let filteredRecipes = Recipes.all.filter(data => data.name.startsWith(searchedLetter))
+            let x = document.getElementsByClassName('rec-div')
+            while(x.length > 0){
+                // debugger
+                x[0].parentNode.removeChild(x[0])
+            }
+
+            let filteredRecipes = Recipes.all.filter(data => data.name.toUpperCase().startsWith(searchedLetter))
+            // Recipes.filtered = filteredRecipes
+            filteredRecipes.map(recipe => recipe.display())
             console.log(filteredRecipes)
         })
-    
     }
 }
 

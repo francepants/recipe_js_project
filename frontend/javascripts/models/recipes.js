@@ -11,11 +11,20 @@ class Recipes {
     //load recipe
     static loadRecipes() {
         fetch("http://localhost:3000/recipes")
-        .then(resp => resp.json())
+        .then((response) => {
+            if (response.ok) {
+                return response.json()
+            } else {
+                throw new Error('something went wrong')
+            }
+        })
         .then(data => {
             Recipes.createRecipes(data)
             Recipes.displayRecipes()
             // Recipes.searchRecipes()
+        })
+        .catch((error) => {
+            console.log(error)
         })
     }
 

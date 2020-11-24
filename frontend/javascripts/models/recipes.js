@@ -177,14 +177,17 @@ class Recipes {
             const searchedLetter = e.target.value.toUpperCase() 
             console.log(searchedLetter)
 
+            // delete rec
             let x = document.getElementsByClassName('rec-div')
             while(x.length > 0){
                 // debugger
                 x[0].parentNode.removeChild(x[0])
             }
 
+            // search rec that meet filter
             let filteredRecipes = Recipes.all.filter(data => data.name.toUpperCase().startsWith(searchedLetter))
-            // Recipes.filtered = filteredRecipes
+            
+            //display filtered rec
             filteredRecipes.map(recipe => recipe.display())
             console.log(filteredRecipes)
         })

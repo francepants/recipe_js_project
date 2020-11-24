@@ -1,24 +1,15 @@
 # README
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+Please follow the following steps to get this app up and running.
 
-Things you may want to cover:
+## Backend
+First,
+- Navigate to the backend folder
+- In the terminal run: 
+    - rails db:migrate
+    - rails db:seed
+    - rails s
 
-* Ruby version
-
-* System dependencies
-
-* Configuration
-
-* Database creation
-
-* Database initialization
-
-* How to run the test suite
-
-* Services (job queues, cache servers, search engines, etc.)
-
-* Deployment instructions
-
-* ...
+Then,
+- Navigate to the frontend folder
+- Open the index.html file in the browser
